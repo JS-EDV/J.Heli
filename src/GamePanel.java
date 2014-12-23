@@ -1,4 +1,6 @@
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -8,12 +10,16 @@ public class GamePanel extends JPanel implements Runnable{
     private static final long serialVersionUID = 1L;
     JFrame frame;
     
+    long delta = 0;
+    long last = 0;
+    long fps = 0;
+    
     public static void main(String[] args) {
 	new GamePanel(800, 600); 
     }
     public GamePanel(int w, int h) {
 	this.setPreferredSize(new Dimension(w, h));
-	frame = new JFrame("GameDemo");
+	frame = new JFrame("Jörgs Helicopter-Game by a \"Java-Forum.org\"-Tutorial ");
 	frame.setLocation(100,100);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.add(this);
@@ -25,19 +31,36 @@ public class GamePanel extends JPanel implements Runnable{
 	th.start();
     }
     private void doInitializations() {
-	// TODO Auto-generated method stub
+	last = System.nanoTime();
 	
     }
     
     @Override
     public void run(){
 	while(frame.isVisible()){
+	    computeDelta();
+	    repaint();
 	    try {
-		Thread.sleep(10);
+		Thread.sleep(15); // max.FrameRate=30FPS @ Thread.sleep(33)
 	    } catch (InterruptedException e) {
 		
 	    }
 	}
+    }
+    
+    private void computeDelta() {
+	delta = System.nanoTime() - last;
+	last = System.nanoTime();
+	fps = ((long)1e9)/delta;
+	
+    }
+    
+    @Override
+    public void paintComponent(Graphics g){
+	super.paintComponent(g);
+	
+	g.setColor(Color.RED);
+	g.drawString("FPS: " + Long.toString(fps),20,10);
     }
     
     
