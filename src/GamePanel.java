@@ -3,7 +3,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements Runnable{
 
     private static final long serialVersionUID = 1L;
     JFrame frame;
@@ -19,6 +19,25 @@ public class GamePanel extends JPanel {
 	frame.add(this);
 	frame.pack();
 	frame.setVisible(true);
+	doInitializations();
+	
+	Thread th = new Thread(this);
+	th.start();
+    }
+    private void doInitializations() {
+	// TODO Auto-generated method stub
+	
+    }
+    
+    @Override
+    public void run(){
+	while(frame.isVisible()){
+	    try {
+		Thread.sleep(10);
+	    } catch (InterruptedException e) {
+		
+	    }
+	}
     }
     
     
