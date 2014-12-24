@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+
 public class Sprite extends Rectangle2D.Double implements Drawable, Moveable{
 
 	private static final long serialVersionUID = 1L;
@@ -70,7 +71,5 @@ public class Sprite extends Rectangle2D.Double implements Drawable, Moveable{
 	public void setVerticalSpeed(double dy) {
 		this.dy = dy;
 	}
-
-	
 
 }
