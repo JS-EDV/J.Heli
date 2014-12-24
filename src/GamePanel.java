@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 
 
 
-public class GamePanel extends JPanel implements Runnable, KeyListener {
+public abstract class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	long last = 0;
 	long fps = 0;
 	
-	Sprite copter;
+	Heli copter;
 	Vector<Sprite> actors;
 	Vector<Sprite> painter;
 	
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		
 		actors = new Vector<Sprite>();
 		painter = new Vector<Sprite>();
-		copter = new Sprite(heli, 400, 300, 100, this);
+		copter = new Heli(heli, 400, 300, 100, this);
 		actors.add(copter);
 		
 		started = true;
