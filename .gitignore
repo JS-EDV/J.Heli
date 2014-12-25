@@ -1,3 +1,4 @@
-
-/nbproject/private/
-/build/
+.nbbuild.xml
+/nbproject/
+/build/classes/.netbeans_automatic_build
+/build/classes/.netbeans_update_resources
