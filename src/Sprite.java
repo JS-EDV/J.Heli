@@ -15,6 +15,9 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 	protected double dx;
 	protected double dy;
 	
+        int loop_from;
+        int loop_to;
+        
 	public Sprite(BufferedImage[] i, double x, double y, long delay, GamePanel p) {
 		pics = i;
 		this.x = x;
@@ -23,6 +26,8 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 		this.width= pics[0].getWidth();
 		this.height= pics[0].getHeight();
 		parent = p;
+                loop_from = 0;
+                loop_to = pics.length-1;
 	}
 
         @Override
@@ -42,18 +47,24 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 	private void computeAnimation() {
 		currentpic++ ;
 		
-		if(currentpic>=pics.length){
-			currentpic =0;
+		if(currentpic > loop_to){
+			currentpic =loop_from;
 		}
 	}
+        
+        public void setLoop(int from, int to){
+            loop_from   = from;
+            loop_to     = to;
+            currentpic  = from;
+        }
 
 	public void move(long delta) {
 		if(dx!=0){
-			x += dx*(delta/1e9);
+                    x += dx*(delta/1e9);
 		}
 		
 		if(dy!=0){
-			y += dy*(delta/1e9);
+                    y += dy*(delta/1e9);
 		}
 	}
 
