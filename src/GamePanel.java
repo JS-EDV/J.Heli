@@ -64,8 +64,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		actors = new Vector<Sprite>();
 		painter = new Vector<Sprite>();
 		copter = new Heli(heli, 400, 300, 100, this);
-		actors.add(copter);
-		
+		createClouds();
+                actors.add(copter); 
+                
 		started = true;
 	}
 
@@ -230,5 +231,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             
 		
 	}
+
+    private void createClouds() {
+        BufferedImage[] bi = loadPics("pics/cloud.gif", 1);
+        
+        for(int y=10;y<getHeight();y+=50){
+            int x = (int)(Math.random()*getWidth());
+            Cloud cloud = new Cloud(bi, x, y, 1000, this);
+            actors.add(cloud);
+        }
+    }
 
 }
