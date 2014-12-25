@@ -17,8 +17,7 @@ import javax.imageio.ImageIO;
 
 
 
-public abstract class GamePanel extends JPanel implements Runnable, KeyListener {
-
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 
@@ -44,6 +43,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener 
 
 	public GamePanel(int w, int h) {
 		this.setPreferredSize(new Dimension(w, h));
+                this.setBackground(Color.BLUE);
 		frame = new JFrame("Helicopter-Game adepted by a \"Java-Forum.org\"-Tutorial ");
 		frame.setLocation(100, 100);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +51,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener 
 		frame.addKeyListener(this);
 		frame.pack();
 		frame.setVisible(true);
-		doInitializations();
 
 		Thread th = new Thread(this);
 		th.start();
@@ -72,62 +71,62 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener 
 
 	@Override
 	public void run() {
-		while (frame.isVisible()) {
-			computeDelta();
+            while (frame.isVisible()) {
+                computeDelta();
+                if(isStarted()){
+                    checkKeys();
+                    doLogic();
+                    moveObjects();
+                    cloneVectors();
+                }
+                repaint();
+                try {
+                    Thread.sleep(15); // max.FrameRate=30FPS @ Thread.sleep(33)++
+                } catch (InterruptedException e) {
 
-			checkKeys();
-			doLogic();
-			moveObjects();
-			cloneVectors();
-
-			repaint();
-			try {
-				Thread.sleep(15); // max.FrameRate=30FPS @ Thread.sleep(33)++
-			} catch (InterruptedException e) {
-
-			}
+                }
 		}
 	}
 	
 	@SuppressWarnings(value = { "unchecked" })
 	private void cloneVectors() {
-		painter = (Vector<Sprite>) actors.clone();
+            painter = (Vector<Sprite>) actors.clone();
 		
 	}
 
 	private void moveObjects() {
-		for(ListIterator<Sprite> it = actors.listIterator();it.hasNext();){
-			Sprite r = it.next();
-			r.move(delta);
-		}
+            for(ListIterator<Sprite> it = actors.listIterator();it.hasNext();){
+                Sprite r = it.next();
+                r.move(delta);
+            }
 	}
 
 	private void doLogic() {
-		for(ListIterator<Sprite> it = actors.listIterator();it.hasNext();){
-			Sprite r = it.next();
-			r.doLogic(delta);
+            for(ListIterator<Sprite> it = actors.listIterator();it.hasNext();){
+                Sprite r = it.next();
+                r.doLogic(delta);
 		}
 	}
 
 	private void checkKeys() {
-		if(up){
-			copter.setVerticalSpeed(-speed);
-		}
-		if(down){
-			copter.setVerticalSpeed(speed);
-		}
-		if(left){
-			copter.setHorizontalSpeed(-speed);
-		}
-		if(right){
-			copter.setHorizontalSpeed(speed);
-		}
-		if(!down && !up){
-			copter.setVerticalSpeed(0);
-		}
-		if(!left && !right){
-			copter.setHorizontalSpeed(0);
-		}		
+            if(up){
+                copter.setVerticalSpeed(-speed);
+            }
+            if(down){
+                copter.setVerticalSpeed(speed);
+            }
+            if(left){
+                copter.setHorizontalSpeed(-speed);
+            }
+            if(right){
+                copter.setHorizontalSpeed(speed);
+            }
+            if(!down && !up){
+                copter.setVerticalSpeed(0);
+            }
+            if(!left && !right){
+                copter.setHorizontalSpeed(0);
+            }		
 	}
 
 	private void computeDelta() {
@@ -139,75 +138,96 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener 
 
 	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+            super.paintComponent(g);
 
-		g.setColor(Color.RED);
-		g.drawString("FPS: " + Long.toString(fps), 20, 10);
-		
-		if(!started){
-			return;
-		}
-		
-		for(ListIterator<Sprite> it = painter.listIterator();it.hasNext();){
-			Sprite r = it.next();
-			r.drawObjects(g);
-		}
+            g.setColor(Color.RED);
+            g.drawString("FPS: " + Long.toString(fps), 20, 10);
+
+            if(!started){
+                return;
+            }
+
+            for(ListIterator<Sprite> it = painter.listIterator();it.hasNext();){
+                Sprite r = it.next();
+                r.drawObjects(g);
+            }
 	}
 	
 	private BufferedImage[] loadPics(String path, int pics) {
-		BufferedImage[] anim = new BufferedImage[pics];
-		BufferedImage source = null;
-		
-		URL pic_url = getClass().getClassLoader().getResource(path);
-		
-		try{
-			source = ImageIO.read(pic_url);
-		} catch (IOException e){ }
-		
-		for(int x=0;x<pics;x++){
-			anim[x] = source.getSubimage(x*source.getWidth()/pics, 0, source.getWidth()/pics, source.getHeight());
-		}
-		
-		return anim;
-	}
+            BufferedImage[] anim = new BufferedImage[pics];
+            BufferedImage source = null;
 
+            URL pic_url = getClass().getClassLoader().getResource(path);
+
+            try{
+                source = ImageIO.read(pic_url);
+            } catch (IOException e){ }
+
+            for(int x=0;x<pics;x++){
+                anim[x] = source.getSubimage(x*source.getWidth()/pics, 0, source.getWidth()/pics, source.getHeight());
+            }
+
+            return anim;
+	}
+        public boolean isStarted(){
+            return started;
+        }
+        
+        public void setStarted(boolean started) {
+            this.started = started;
+        }
+        
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_UP){
-			up = true;
-		}
-		if(e.getKeyCode()==KeyEvent.VK_DOWN){
-			down = true;
-		}
-		if(e.getKeyCode()==KeyEvent.VK_LEFT){
-			left = true;
-		}
-		if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-			right = true;
-		}
-		
+            if(e.getKeyCode()==KeyEvent.VK_UP){
+                up = true;
+            }
+            if(e.getKeyCode()==KeyEvent.VK_DOWN){
+                down = true;
+            }
+            if(e.getKeyCode()==KeyEvent.VK_LEFT){
+                left = true;
+            }
+            if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                right = true;
+            }
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_UP){
-			up = false;
-		}
-		if(e.getKeyCode()==KeyEvent.VK_DOWN){
-			down = false;
-		}
-		if(e.getKeyCode()==KeyEvent.VK_LEFT){
-			left = false;
-		}
-		if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-			right = false;
-		}
+            if(e.getKeyCode()==KeyEvent.VK_UP){
+                up = false;
+            }
+            if(e.getKeyCode()==KeyEvent.VK_DOWN){
+                down = false;
+            }
+            if(e.getKeyCode()==KeyEvent.VK_LEFT){
+                left = false;
+            }
+            if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                right = false;
+            }
+            
+            if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                if(!isStarted()){
+                    doInitializations();
+                    setStarted(true);
+                }
+            }
+            
+            if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
+                if(isStarted()){
+                    setStarted(false);
+                } else {
+                    frame.dispose();
+                }
+            }
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+            
 		
 	}
 

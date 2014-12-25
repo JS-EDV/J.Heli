@@ -3,7 +3,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 
-public class Sprite extends Rectangle2D.Double implements Drawable, Moveable{
+public abstract class Sprite extends Rectangle2D.Double implements Drawable, Moveable{
 
 	private static final long serialVersionUID = 1L;
 	long delay;
@@ -25,6 +25,7 @@ public class Sprite extends Rectangle2D.Double implements Drawable, Moveable{
 		parent = p;
 	}
 
+        @Override
 	public void drawObjects(Graphics g) {
 		g.drawImage(pics[currentpic], (int)x, (int)y, null);
 		
@@ -59,17 +60,23 @@ public class Sprite extends Rectangle2D.Double implements Drawable, Moveable{
 	public double getHorizontalSpeed() {
 		return dx;
 	}
-
 	public void setHorizontalSpeed(double dx) {
 		this.dx = dx;
 	}
-
 	public double getVerticalSpeed() {
 		return dy;
 	}
-
 	public void setVerticalSpeed(double dy) {
 		this.dy = dy;
 	}
+        /*
+        * setX() & setY() not implemented in Tutorial v.1.2
+        */
+        public void setX(double x) {
+            this.x = x;
+        }
+        public void setY(double y) {
+            this.y = y;
+        }
 
 }
