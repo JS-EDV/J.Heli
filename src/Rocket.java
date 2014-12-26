@@ -53,6 +53,13 @@ public class Rocket extends Sprite{
                 setVerticalSpeed(-40);
             }
         }
+        
+        if(getHorizontalSpeed()>0 && getX()>parent.getWidth()){
+            remove = true;
+        }
+        if(getHorizontalSpeed()<0 && getX()+getWidth()<0){
+            remove = true;                    
+        }
     }
     @Override
     public void setHorizontalSpeed(double d) {
