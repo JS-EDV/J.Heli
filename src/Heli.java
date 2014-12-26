@@ -30,6 +30,24 @@ public class Heli extends Sprite{
                 setVerticalSpeed(0);
             }
         }
+
+    @Override
+    public boolean colliededWith(Sprite s) {
+        
+        if(remove){
+            return false;
+        }
+        
+        if(this.intersects(s)){
+            
+            if(s instanceof Rocket){
+                remove = true;
+                s.remove = true;
+                return true;
+            }
+        }
+        return false;
+    }
                 
 	
 }

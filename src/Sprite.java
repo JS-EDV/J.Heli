@@ -17,6 +17,7 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 	
         int loop_from;
         int loop_to;
+        boolean remove;
         
 	public Sprite(BufferedImage[] i, double x, double y, long delay, GamePanel p) {
 		pics = i;
@@ -89,5 +90,8 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
         public void setY(double y) {
             this.y = y;
         }
+        
+        public abstract boolean colliededWith(Sprite s);
+                
 
 }

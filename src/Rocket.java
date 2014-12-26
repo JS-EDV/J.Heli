@@ -82,4 +82,26 @@ public class Rocket extends Sprite{
         g.drawRect((int)target.x, (int)target.y, (int)target.width, (int)target.height);
     }
     */
+
+    @Override
+    public boolean colliededWith(Sprite s) {
+        
+        if(remove){
+            return false;
+        }
+        
+        if(this.intersects(s)){
+            if(s instanceof Heli){
+                remove = true;
+                s.remove = true;
+                return true;
+            }
+            if(s instanceof Rocket){
+                remove = true;
+                s.remove = true;
+                return true;
+            }
+        }
+        return false;
+    }
 }

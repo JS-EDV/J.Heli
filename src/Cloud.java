@@ -35,4 +35,9 @@ public class Cloud extends Sprite{
             x = parent.getWidth()+getWidth();
         }
     }
+
+    @Override
+    public boolean colliededWith(Sprite s) {
+        return false;
+    }
 }
