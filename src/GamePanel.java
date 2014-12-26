@@ -27,8 +27,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
     long delta = 0;
     long last = 0;
     long fps = 0;
+    long gameover=0;
+    
     int onScreenObjects=0;
     int removedObjects =0;
+      
     Heli copter;
     Vector<Sprite> actors;
     Vector<Sprite> painter;
@@ -65,7 +68,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
     private void doInitializations() {
         last = System.nanoTime();
-
+        gameover = 0;
         BufferedImage[] heli = loadPics("pics/heli.gif", 4);
         rocket  =loadPics("pics/rocket.gif", 8);
         background = loadPics("pics/background.jpg", 1)[0];
@@ -150,12 +153,37 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
             if(r.remove){
                 it.remove();
                 removedObjects++;
+                onScreenObjects = actors.size();  
             }
-            onScreenObjects = actors.size();   
 //            System.out.println(actors.size() + " - "+ onScreenObjects);
+            
+            for(int i=0; i<actors.size();i++){
+                for(int n= i+1;n<actors.size();n++){
+                    
+                    Sprite s1 = actors.elementAt(i);
+                    Sprite s2 = actors.elementAt(n);
+                    
+                    s1.colliededWith(s2);
+                }
+            }
+            
+            if(copter.remove && gameover ==0){
+                gameover = System.currentTimeMillis();
+            }
+            if(gameover>0){
+                if(System.currentTimeMillis()-gameover>2000){
+                    stopGame();
+                }
+            }
         }
+        
     }
-
+    
+    private void stopGame(){
+        timer.stop();
+        setStarted(false);
+    }
+    
     private void checkKeys() {
         if (up) {
             copter.setVerticalSpeed(-speed);
@@ -269,9 +297,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             if (isStarted()) {
-                setStarted(false);
-                timer.stop();
-                
+                stopGame();
             } else {
                 frame.dispose();
             }
