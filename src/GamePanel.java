@@ -192,7 +192,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
         g.setColor(Color.RED);
         g.drawString("FPS: " + Long.toString(fps), 10, 10);
         g.drawString("Obj: " + onScreenObjects, 10, 25);
-        g.drawString("SCORE: " + removedObjects, getWidth()-70, 20);
+        g.drawString("Rockets: " + removedObjects, getWidth()-78, 20);
         if (!started) {
             return;
         }
