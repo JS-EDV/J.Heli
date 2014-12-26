@@ -37,6 +37,7 @@ public abstract class Sprite extends Rectangle2D.Double implements Drawable, Mov
 		
 	}
 	
+        @Override
 	public void doLogic(long delta) {
 		animation  += (delta / 1000000);
 		if (animation>delay) {

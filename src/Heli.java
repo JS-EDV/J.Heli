@@ -41,10 +41,14 @@ public class Heli extends Sprite{
         if(this.intersects(s)){
             
             if(s instanceof Rocket){
+//              parent.createExplosion((int)getX(),(int)getY());
+//              parent.createExplosion((int)s.getX(), (int)s.getY());
                 remove = true;
                 s.remove = true;
                 return true;
             }
+            
+            
         }
         return false;
     }

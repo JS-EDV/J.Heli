@@ -29,8 +29,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
     long fps = 0;
     long gameover=0;
     
-    int onScreenObjects=0;
-    int removedObjects =0;
+//    int onScreenObjects=0;
+//    int removedObjects =0;
       
     Heli copter;
     Vector<Sprite> actors;
@@ -45,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
     Timer timer;
     BufferedImage[] rocket;
+//    BufferedImage[] explosion;
     BufferedImage background;
     
     public static void main(String[] args) {
@@ -72,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
         BufferedImage[] heli = loadPics("pics/heli.gif", 4);
         rocket  =loadPics("pics/rocket.gif", 8);
         background = loadPics("pics/background.jpg", 1)[0];
-        
+//        explosion = loadPics("pics/explosion.gif", 5);
         actors = new Vector<Sprite>();
         painter = new Vector<Sprite>();
         copter = new Heli(heli, 400, 300, 100, this);
@@ -104,9 +105,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
         }
         ListIterator<Sprite> it = actors.listIterator();
         it.add(rock);
-        
-        
     }
+    
+//    public void createExplosion(int x, int y){
+//        ListIterator<Sprite> it = actors.listIterator();
+//        it.add(new Explosion(explosion, x, y, 100, this));
+//    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(isStarted() && e.getSource().equals(timer)){
@@ -152,8 +157,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
             
             if(r.remove){
                 it.remove();
-                removedObjects++;
-                onScreenObjects = actors.size();  
+//                removedObjects++;
+//                onScreenObjects = actors.size();  
             }
 //            System.out.println(actors.size() + " - "+ onScreenObjects);
             
@@ -171,7 +176,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
                 gameover = System.currentTimeMillis();
             }
             if(gameover>0){
-                if(System.currentTimeMillis()-gameover>2000){
+                if(System.currentTimeMillis()-gameover>3000){
                     stopGame();
                 }
             }
@@ -219,8 +224,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
         g.drawImage(background, 0, 0, this);
         g.setColor(Color.RED);
         g.drawString("FPS: " + Long.toString(fps), 10, 10);
-        g.drawString("Obj: " + onScreenObjects, 10, 25);
-        g.drawString("Rockets: " + removedObjects, getWidth()-78, 20);
+//        g.drawString("Obj: " + onScreenObjects, 10, 25);
+//        g.drawString("Rockets: " + removedObjects, getWidth()-78, 20);
         if (!started) {
             return;
         }
@@ -317,4 +322,5 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
             actors.add(cloud);
         }
     }
+    
 }
